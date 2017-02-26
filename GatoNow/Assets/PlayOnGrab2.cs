@@ -6,9 +6,11 @@ public class PlayOnGrab2 : MonoBehaviour {
 
     public AudioClip impact;
     AudioSource audio;
+    bool first;
 
     void Start()
     {
+        first = true;
         audio = GetComponent<AudioSource>();
        // audio.PlayOneShot(impact, 0.7F);
     }
@@ -17,9 +19,17 @@ public class PlayOnGrab2 : MonoBehaviour {
     // Use this for initialization
     void OnCollisionEnter()
     {
-        this.gameObject.AddComponent<AudioSource>();
-        this.GetComponent<AudioSource>().clip = myclip;
-        this.GetComponent<AudioSource>().PlayDelayed(2);
+        if (!first)
+        {
+            this.gameObject.AddComponent<AudioSource>();
+            this.GetComponent<AudioSource>().clip = myclip;
+            this.GetComponent<AudioSource>().PlayDelayed(0);
+        }
+
+        else
+        {
+            first = false;
+        }
     }
 
 }
