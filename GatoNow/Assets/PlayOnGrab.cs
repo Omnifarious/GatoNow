@@ -1,23 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-public class PlayOnGrab : MonoBehaviour {
+[RequireComponent(typeof(AudioSource))]
+public class PlayOnGrab : MonoBehaviour
+{
+    public AudioClip impact;
+    AudioSource audio;
 
-    // Use this for initialization
-    public AudioClip myclip;
+    void Start()
+    {
+        audio = GetComponent<AudioSource>();
+    }
 
-
-	
-	// Update is called once per frame
-	void OnCollisionEnter (Collision c) {
-        if (c.collider.tag.Equals("RightController"))
-        {
-        this.gameObject.AddComponent<AudioSource>();
-        this.GetComponent<AudioSource>().clip = myclip;
-        this.GetComponent<AudioSource>().Play();
-        }
-	}
-    
-    
+    void OnCollisionEnter()
+    {
+        audio.PlayOneShot(impact, 0.7F);
+    }
 }
+
