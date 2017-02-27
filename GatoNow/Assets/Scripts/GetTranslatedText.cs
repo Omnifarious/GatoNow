@@ -11,7 +11,7 @@ using System.Text;
 
 public class GetTranslatedText : MonoBehaviour {
 
-    string token;
+    string token = "__TOKEN__";
     [SerializeField]
     private string text = "table";
     string translation;
@@ -21,7 +21,7 @@ public class GetTranslatedText : MonoBehaviour {
     {
     }
 
-    void GetTranslation(Action<WebResponse> gotResponse)
+    void GetTranslation()
     {
         if (token != null && text != null)
         {
@@ -42,7 +42,7 @@ public class GetTranslatedText : MonoBehaviour {
         }
         else if (token == null)
         {
-            GetToken(response);
+            GetToken();
         }
     }
 
@@ -72,20 +72,8 @@ public class GetTranslatedText : MonoBehaviour {
         // Release the HttpWebResponse
         response.Close();
     }
-
-    Action<WebResponse> response = o =>
-    {
-        WebResponse response = o;
-        using (Stream stream = response.GetResponseStream())
-        {
-            Debug.Log(response.ToString());
-            StreamReader reader = new StreamReader(stream, Encoding.UTF8);
-            string responseString = reader.ReadToEnd();
-            Debug.Log(responseString);
-        }
-    };
-
-    void GetToken(Action<WebResponse> gotResponse)
+    
+    void GetToken()
     {
         Debug.Log("Start get token");
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
@@ -99,7 +87,7 @@ public class GetTranslatedText : MonoBehaviour {
             webRequest.ContentType = "application/json";
             webRequest.Accept = "application/jwt";
             webRequest.ContentLength = 0;
-            webRequest.Headers["Ocp-Apim-Subscription-Key"] = "";
+            webRequest.Headers["Ocp-Apim-Subscription-Key"] = "__KEY__";
 
             webRequest.BeginGetRequestStream(new AsyncCallback(GetTokenRequestStreamCallback), webRequest);
         }
@@ -158,7 +146,8 @@ public class GetTranslatedText : MonoBehaviour {
     {
         if (Input.GetKeyDown("space"))
         {
-            GetTranslation(response);
+            Debug.Log("Start");
+            GetTranslation();
         }
     }
 }
